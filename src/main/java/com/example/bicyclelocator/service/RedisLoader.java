@@ -32,20 +32,12 @@ public class RedisLoader {
     public RedisLoader(Jedis jedis) {
         this.jedis = jedis;
     }
-//    public void loadDataAndCheck() {
-//        loadData();
-//        boolean isInserted = isBicycleIdInRedis("someBicycleId");
-//        System.out.println("Data inserted: " + isInserted);
-//    }
-//    public boolean isBicycleIdInRedis(String bicycleId) {
-//        List<GeoCoordinate> coordinates = jedis.geopos("bicycles", bicycleId);
-//        return coordinates != null && !coordinates.isEmpty();
-//    }
 
     @PostConstruct
     public void loadData() {
         Path path = new Path("D:\\BicycleLocatorChallenge\\bicycle_data.parquet");
-
+//        int count = 0;
+//        int count1=0;
         Configuration conf = new Configuration();
 
         try (final ParquetReader<Row> reader = RowParquetReader.builder(HadoopInputFile.fromPath(path, conf)).build()) {
@@ -58,11 +50,14 @@ public class RedisLoader {
                // jedis.geoadd("bicycles", longitude, latitude, bicycleId, GeoAddParams.geoAddParams().withHash());
                 try{
                     jedis.geoadd(bicycleId, longitude, latitude, bicycleId);
+                    //count1++;
+                    //System.out.println(count1);
                 } catch (Exception e){
-                        System.out.println("error in adding locations");
+                           // count++;
+                        //System.out.println("error in adding locations"+count);
                 }
 
-                System.out.println("Bicycle with id " + bicycleId + " added to Redis"+"response from redis" );
+                //System.out.println("Bicycle with id " + bicycleId + " added to Redis"+"response from redis" );
                 row = reader.read();
             }
         } catch (Exception exception) {
