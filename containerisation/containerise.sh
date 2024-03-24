@@ -24,7 +24,7 @@ echo "Containerising your application, please wait"
 echo "================================================================================================================================\n"
 docker build -t $applicationName:$tagNumber .
 
-docker tag $applicationName:$tagNumber darshanbhasvar/$applicationName:$tagNumber
+docker tag $applicationName:$tagNumber $baseRegistry/$applicationName:$tagNumber
 
 echo "\n================================================================================================================================"
 echo "Pushing your application to docker registry, please wait"
